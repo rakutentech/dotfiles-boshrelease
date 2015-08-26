@@ -1,0 +1,7 @@
+check file shrc path /root/shrc_version
+  if does not exist then exec "/var/vcap/jobs/shrc/bin/deployrcs init"
+  <% require 'digest' %>
+  <% shrc_ver = spec.job.templates.find{ |j| j.name == "shrc" }.version %>
+  # Current shrc version is <%= shrc_ver %>
+  if failed md5 checksum expect <%= Digest::MD5.new.hexdigest("#{shrc_ver}\n") %>
+    then exec "/var/vcap/jobs/shrc/bin/deployrcs update"

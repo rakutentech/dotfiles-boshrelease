@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+echo `date` $1 >> /root/shrc_booted
+echo 'if [ -f ~/.shrc ]; then source ~/.shrc; fi' > /root/.bash_aliases
+echo <%= spec.job.templates.find{ |j| j.name == "shrc" }.version %> > /root/shrc_version
+cp /var/vcap/jobs/shrc/dotfiles/inputrc /root/.inputrc
+cp /var/vcap/jobs/shrc/dotfiles/shrc /root/.shrc

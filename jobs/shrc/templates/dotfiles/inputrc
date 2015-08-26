@@ -1,0 +1,22 @@
+# Be 8 bit clean.
+set input-meta on
+set output-meta on
+
+# ignore case when autocomplete file/directory name using tab
+set completion-ignore-case on
+
+# PageUp/PageDown to search history
+"\e[5~": history-search-backward
+"\e[6~": history-search-forward
+
+# Meta up/down to search history
+"\e[1;5B": history-search-forward
+"\e[1;5A": history-search-backward
+
+# Meta p/n to search history
+"\en": history-search-forward
+"\ep": history-search-backward
+
+# Meta left/right to jump between words
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word

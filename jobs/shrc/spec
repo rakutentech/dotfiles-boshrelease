@@ -1,0 +1,12 @@
+---
+name: shrc
+templates:
+  bin/deployrcs: bin/deployrcs
+  dotfiles/inputrc: dotfiles/inputrc
+  dotfiles/shrc.erb: dotfiles/shrc
+
+packages:
+  []
+
+properties:
+  {}

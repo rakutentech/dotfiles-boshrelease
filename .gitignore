@@ -1,0 +1,17 @@
+# Builds
+.blobs
+blobs
+.final_builds/*/*/*.tgz
+Gemfile.lock
+releases/*.tgz
+
+# Secrets
+config/private.yml
+
+# Dev files
+config/dev.yml
+.dev_builds
+dev_releases
+manifest/*
+!manifest/dev.yml
+
