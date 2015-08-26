@@ -2,6 +2,9 @@
 echo "cd $HOME"
 cd $HOME
 
+APP_FILE=/var/vcap/data/da_next/db/instances.json
+APP_DIR=/var/vcap/data/warden/depot/
+
 # PS1
 MY_ENV="<%= spec.deployment %>"
 MY_ROLE="<%= name %>/<%= index %>"
@@ -24,6 +27,11 @@ slink /var/vcap/monit/monit.log $HOME/monit.log
 slink /var/vcap/ $HOME/vcap
 slink /var/vcap/jobs/ $HOME/jobs
 slink /var/vcap/sys/log/ $HOME/log
+
+if [ -f $APP_FILE ];
+then
+   slink $APP_DIR $HOME/apps
+fi
 
 # alias
 alias sms="monit summary"
