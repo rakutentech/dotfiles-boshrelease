@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+export PATH="/root/bin:$PATH"
+
 echo "cd $HOME"
 cd $HOME
 
@@ -14,16 +16,28 @@ unset MY_ENV MY_ROLE MY_IP LRED LBLUE WHITE
 
 # Symbol Link
 slink () {
-  if ! [[ -e $2 || -h $2 ]]; then
-    ln -s $1 $2
+  # if source exist
+  if [[ -e $1 ]]; then
+    # if symbol link doesnot exist
+    if ! [[ -e $2 || -h $2 ]]; then
+      ln -s $1 $2
+    fi
   fi
 }
 
+# Often used directories
 slink /var/vcap/packages/ $HOME/pkg
 slink /var/vcap/monit/monit.log $HOME/monit.log
 slink /var/vcap/ $HOME/vcap
 slink /var/vcap/jobs/ $HOME/jobs
 slink /var/vcap/sys/log/ $HOME/log
+
+# Warden containers
+slink /var/vcap/data/warden/depot/ $HOME/depot
+# Link warden containers to /root/apps
+if [[ -e /var/vcap/data/warden/depot/ && -x /root/bin/link_apps ]]; then
+  /root/bin/link_apps
+fi
 
 # alias
 alias sms="monit summary"
