@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# This is completion script for wwsh
+_wwsh () 
+{
+  local cur prev opts
+  local WWSH_APPDIR=/root/apps/
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  if [[ -d $WWSH_APPDIR ]]; then
+    opts=`ls $WWSH_APPDIR`
+    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+  fi
+}
+complete -F _wwsh wwsh

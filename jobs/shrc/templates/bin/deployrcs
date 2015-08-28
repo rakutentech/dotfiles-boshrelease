@@ -8,7 +8,8 @@ echo 'if [ -f ~/.shrc ]; then source ~/.shrc; fi' > /root/.bash_aliases
 echo <%= spec.job.templates.find{ |j| j.name == "shrc" }.version %> > /root/shrc_version
 cp /var/vcap/jobs/shrc/dotfiles/inputrc /root/.inputrc
 cp /var/vcap/jobs/shrc/dotfiles/shrc /root/.shrc
+cp /var/vcap/jobs/shrc/dotfiles/wwsh.complete /root/.wwsh.complete
 
 mkdir -p /root/bin
-cp /var/vcap/jobs/shrc/dotfiles/link_apps.rb /root/bin/link_apps
-chmod u+x /root/bin/link_apps
+cp /var/vcap/jobs/shrc/rootbin/* /root/bin/
+chmod u+x /root/bin/*

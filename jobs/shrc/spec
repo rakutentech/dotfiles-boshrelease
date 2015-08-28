@@ -4,7 +4,10 @@ templates:
   bin/deployrcs: bin/deployrcs
   dotfiles/inputrc: dotfiles/inputrc
   dotfiles/shrc.erb: dotfiles/shrc
-  dotfiles/link_apps.rb: dotfiles/link_apps.rb
+  dotfiles/wwsh.complete: dotfiles/wwsh.complete
+  rootbin/link_apps: rootbin/link_apps
+  rootbin/wwsh: rootbin/wwsh
+  rootbin/ack: rootbin/ack
 
 packages:
   []

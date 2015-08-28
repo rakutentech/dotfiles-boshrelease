@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-export PATH="/root/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
 
 echo "cd $HOME"
 cd $HOME
@@ -37,6 +37,10 @@ slink /var/vcap/data/warden/depot/ $HOME/depot
 # Link warden containers to /root/apps
 if [[ -e /var/vcap/data/warden/depot/ && -x /root/bin/link_apps ]]; then
   /root/bin/link_apps
+fi
+
+if [[ -e $HOME/.wwsh.complete ]]; then
+  . $HOME/.wwsh.complete
 fi
 
 # alias
