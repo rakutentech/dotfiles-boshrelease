@@ -6,7 +6,29 @@ Inspired by `cloudfoundry-community/root-env-boshrelease`, `dotfiles-boshrelease
 
 `Dotfiles-boshrelease` and `root-env-boshrelease` are similar in a sense that both enables the customization of `/root` directory. `root-env-boshrelease` achieves it by downloading a tarball from internet daily and replace the /root. The good point of such implementation is one can update `/root` without recreating release/re-deploying. However a concern would be downloading root-executing scripts to production servers might not be the best practice. Also, dotfiles usually should not be changing in a daily pace.
 
-In contrast, `dotfiles-boshrelease` only templates scripts from /var/vcap/jobs/shrc/dotfiles/*. And `shrc/monit` ensure that when a new version of shrc is deployed, it will update it into /root. The shortcoming will be that it'll be necessary to create and upload release when you need to modify rc scripts.
+In contrast, `dotfiles-boshrelease` only templates scripts from /var/vcap/jobs/shrc/dotfiles/*. And `shrc/monit` ensure that when a new version of shrc is deployed, it will update it into /root.
+
+# How to use
+In manifest file, add `dotfiles-boshrelease` to releases. In template, add `shrc` job.
+
+# What if I want to add some more bash sugar?
+In order to modify and deploy new rc files, you have to create and upload release to bosh, then do the `bosh deploy`
+
+# What is done by default
+1. Inputrc:
+  - Enable word jump (alt + Left/Right);
+  - Enable history search (alt + Up/Down; alt + p/n; PageUp/PageDown)
+  - Completion-ignore-case on
+2. shrc:
+  - Frequently used dirs: link to /root(vcap, packages, jobs, sys/log, etc..)
+  - PS1: Meaningful PS1
+3. /root/bin:
+  - ack
+  - (home made) link_apps: link warden container directories to /root/app.
+  - (home made) wwsh: a shortcut to wsh into warden containers.
+4. completion:
+  - monit completion
+  - wwsh completion
 
 # Something else
 For some reason, by default the bash in stemcell doesnot recognize `.profile` or `.bash_profile`, and it will only read the already existed `.bashrc`. Therefore this release use `.bash_aliases` to trigger customized `shrc` script.
