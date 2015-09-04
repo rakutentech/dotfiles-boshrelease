@@ -22,6 +22,8 @@ In order to modify and deploy new rc files, you have to create and upload releas
 2. shrc:
   - Frequently used dirs: link to /root(vcap, packages, jobs, sys/log, etc..)
   - PS1: Meaningful PS1
+  - packages bins: add packages/*/bin to PATH.
+  - cd $HOME: Home sweet home.
 3. /root/bin:
   - ack
   - (home made) link_apps: link warden container directories to /root/app.

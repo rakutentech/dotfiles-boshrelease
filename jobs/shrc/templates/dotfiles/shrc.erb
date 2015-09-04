@@ -1,18 +1,21 @@
 #!/usr/bin/env bash
 export PATH="$HOME/bin:$PATH"
 
-echo "cd $HOME"
-cd $HOME
+# Add packages binaries to path
+for pkg_bin in $(ls -d /var/vcap/packages/*/bin); do
+  export PATH="$PATH:$pkg_bin"
+done
+unset pkg_bin
 
 # PS1
-MY_ENV="<%= spec.deployment %>"
-MY_ROLE="<%= name %>/<%= index %>"
-MY_IP="<%= spec.networks.send(spec.networks.methods(false).first).ip %>"
-LRED='\033[01;31m'
-LBLUE='\033[01;34m'
-WHITE='\033[00m'
-PS1="\[${LRED}\](env=${MY_ENV},role=${MY_ROLE},ip=${MY_IP})\u\[${WHITE}\]:\[${LBLUE}\]\w\[${WHITE}\]\n\\$ "
-unset MY_ENV MY_ROLE MY_IP LRED LBLUE WHITE
+my_env="<%= spec.deployment %>"
+my_role="<%= name %>/<%= index %>"
+my_ip="<%= spec.networks.send(spec.networks.methods(false).first).ip %>"
+light_red='\033[01;31m'
+light_blue='\033[01;34m'
+white='\033[00m'
+PS1="\[${light_red}\](env=${my_env},role=${my_role},ip=${my_ip})\u\[${white}\]:\[${light_blue}\]\w\[${white}\]\n\\$ "
+unset my_env my_role my_ip light_red light_blue white
 
 # Symbol Link
 slink () {
@@ -47,9 +50,13 @@ compl $HOME/.monit.complete
 slink /var/vcap/data/warden/depot/ $HOME/depot
 # Link warden containers to /root/apps
 if [[ -e /var/vcap/data/warden/depot/ && -x /root/bin/link_apps ]]; then
-  /root/bin/link_apps
+  /var/vcap/bosh/bin/ruby /root/bin/link_apps
 fi
 
 # alias
 alias sms="monit summary"
 alias m="monit"
+
+# RTB
+echo "cd $HOME"
+cd $HOME
