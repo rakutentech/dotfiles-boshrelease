@@ -25,6 +25,13 @@ slink () {
   fi
 }
 
+# run completion
+compl () {
+  if [[ -e $1 ]]; then
+    . $1
+  fi
+}
+
 # Often used directories
 slink /var/vcap/packages/ $HOME/pkg
 slink /var/vcap/monit/monit.log $HOME/monit.log
@@ -32,15 +39,15 @@ slink /var/vcap/ $HOME/vcap
 slink /var/vcap/jobs/ $HOME/jobs
 slink /var/vcap/sys/log/ $HOME/log
 
+# Customized completions
+compl $HOME/.wwsh.complete
+compl $HOME/.monit.complete
+
 # Warden containers
 slink /var/vcap/data/warden/depot/ $HOME/depot
 # Link warden containers to /root/apps
 if [[ -e /var/vcap/data/warden/depot/ && -x /root/bin/link_apps ]]; then
   /root/bin/link_apps
-fi
-
-if [[ -e $HOME/.wwsh.complete ]]; then
-  . $HOME/.wwsh.complete
 fi
 
 # alias

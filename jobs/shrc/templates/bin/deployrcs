@@ -9,6 +9,7 @@ echo <%= spec.job.templates.find{ |j| j.name == "shrc" }.version %> > /root/shrc
 cp /var/vcap/jobs/shrc/dotfiles/inputrc /root/.inputrc
 cp /var/vcap/jobs/shrc/dotfiles/shrc /root/.shrc
 cp /var/vcap/jobs/shrc/dotfiles/wwsh.complete /root/.wwsh.complete
+cp /var/vcap/jobs/shrc/dotfiles/monit.complete /root/.monit.complete
 
 mkdir -p /root/bin
 cp /var/vcap/jobs/shrc/rootbin/* /root/bin/

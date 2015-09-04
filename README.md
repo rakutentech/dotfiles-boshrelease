@@ -13,3 +13,6 @@ For some reason, by default the bash in stemcell doesnot recognize `.profile` or
 
 # How to use
 Deploy the `shrc` job in a template, then find the amazing changes with `sudo su root`.
+
+# Reference
+monit.complete is from: https://github.com/linsong/my_bash/blob/master/completion/monit.completion.bash
