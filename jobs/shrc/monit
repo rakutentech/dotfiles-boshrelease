@@ -1,4 +1,4 @@
-check file shrc path /root/shrc_version
+check file shrc path /root/.shrc_version
   if does not exist then exec "/var/vcap/jobs/shrc/bin/deployrcs init"
   <% require 'digest' %>
   <% shrc_ver = spec.job.templates.find{ |j| j.name == "shrc" }.version %>
