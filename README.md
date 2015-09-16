@@ -1,3 +1,4 @@
+
 # Dotfiles Boshrelease
 For higher productivity with `bosh ssh`.
 
@@ -39,6 +40,9 @@ In order to modify and deploy new rc files, you have to create a new release, up
 For some reason, by default the bash in stemcell doesnot recognize `.profile` or `.bash_profile`, and it will only read the already existed `.bashrc`. Therefore this release use `.bash_aliases` to trigger customized `shrc` script.
 
 # Reference
-Inspired by root-env: https://github.com/cloudfoundry-community/root-env-boshrelease
-monit.complete is taken from: https://github.com/linsong/my_bash/blob/master/completion/monit.completion.bash
-ack: http://beyondgrep.com/
+- Inspired by root-env: https://github.com/cloudfoundry-community/root-env-boshrelease
+- ack: http://beyondgrep.com/
+- monit.complete is taken from: https://github.com/linsong/my_bash/blob/master/completion/monit.completion.bash
+
+# Author
+[Weichu Liu](https://twitter.com/weichuliu) (Rakuten, Inc.)
