@@ -23,7 +23,7 @@ Dir.glob("#{root_apps}/*").each do |app|
 end
 
 applications['instances'].each do |instance|
-  if instance['warden_container_path']
+  if instance['warden_container_path'] && instance['state']=="RUNNING"
     app_symlink = File.join root_apps, "#{instance['application_name']}-#{instance['instance_index']}-#{instance['warden_handle']}"
     FileUtils.symlink instance['warden_container_path'], app_symlink
   end
