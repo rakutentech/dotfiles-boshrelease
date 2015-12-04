@@ -28,15 +28,17 @@ In order to modify and deploy new rc files, you have to create a new release, up
   - PS1: Meaningful PS1
   - packages bins: add packages/*/bin to PATH.
   - cd $HOME: Home sweet home.
-3. /root/bin:
+3. extrarc:
+  - You can inject commands from manifest by overriding `spec.extra_commands` property. However be careful not to crash your machine ^_^
+4. /root/bin:
   - ack
   - (home made) link_apps: link warden container directories to /root/app.
   - (home made) wwsh: a shortcut to wsh into warden containers.
   - (home made) haste: a hastebin client, is convenient when you have a internal hastebin server.
-4. completion:
+5. completion:
   - monit completion
   - wwsh completion
-5. properties dump:
+6. properties dump:
   - Properties are dumped to `~/.properties.json` for debugging.
 
 # Something else

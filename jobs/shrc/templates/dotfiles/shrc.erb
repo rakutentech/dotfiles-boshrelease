@@ -57,3 +57,10 @@ alias m="monit"
 # RTB
 echo "cd $HOME"
 cd $HOME
+
+# Extra commands from manifest
+# Forcely copy before sourcing because properties change doesnot trigger deployrc
+if [ -f /var/vcap/jobs/shrc/dotfiles/extrarc ]; then
+  cp /var/vcap/jobs/shrc/dotfiles/extrarc $HOME/.extrarc
+  . $HOME/.extrarc
+fi

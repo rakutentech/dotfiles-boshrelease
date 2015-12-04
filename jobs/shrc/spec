@@ -4,6 +4,7 @@ templates:
   bin/deployrcs: bin/deployrcs
   dotfiles/inputrc: dotfiles/inputrc
   dotfiles/shrc.erb: dotfiles/shrc
+  dotfiles/extrarc.erb: dotfiles/extrarc
   dotfiles/properties.json.erb: dotfiles/properties.json
   dotfiles/wwsh.complete: dotfiles/wwsh.complete
   dotfiles/monit.complete: dotfiles/monit.complete
@@ -16,4 +17,7 @@ packages:
   []
 
 properties:
-  {}
+  shrc.extra_commands:
+    description: Bash that will be run after shrc when login
+    warning: THESE COMMANDS EXECUTED WITH ROOT PRIVILEGE, DO NOT CRASH YOUR MACHINE
+    default: ""
