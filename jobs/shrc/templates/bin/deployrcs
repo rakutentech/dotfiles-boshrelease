@@ -6,10 +6,13 @@ set -u # report the usage of uninitialized variables
 echo `date` $1 >> /root/.shrc_booted
 echo 'if [ -f ~/.shrc ]; then source ~/.shrc; fi' > /root/.bash_aliases
 echo <%= spec.job.templates.find{ |j| j.name == "shrc" }.version %> > /root/.shrc_version
-cp /var/vcap/jobs/shrc/dotfiles/inputrc /root/.inputrc
-cp /var/vcap/jobs/shrc/dotfiles/shrc /root/.shrc
-cp /var/vcap/jobs/shrc/dotfiles/wwsh.complete /root/.wwsh.complete
-cp /var/vcap/jobs/shrc/dotfiles/monit.complete /root/.monit.complete
+
+DOTFILES_DIR=/var/vcap/jobs/shrc/dotfiles
+cp $DOTFILES_DIR/inputrc         /root/.inputrc
+cp $DOTFILES_DIR/shrc            /root/.shrc
+cp $DOTFILES_DIR/properties.json /root/.properties.json
+cp $DOTFILES_DIR/wwsh.complete   /root/.wwsh.complete
+cp $DOTFILES_DIR/monit.complete  /root/.monit.complete
 
 mkdir -p /root/bin
 cp /var/vcap/jobs/shrc/rootbin/* /root/bin/

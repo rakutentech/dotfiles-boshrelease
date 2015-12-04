@@ -12,7 +12,7 @@ Inspired by `cloudfoundry-community/root-env-boshrelease`, `dotfiles-boshrelease
 In contrast, `dotfiles-boshrelease` only templates scripts from /var/vcap/jobs/shrc/dotfiles/*. And `shrc/monit` ensure that when a new version of shrc is deployed, it will update it into /root.
 
 # How to use
-In manifest file, add `dotfiles-boshrelease` to releases. In template, add `shrc` job.
+In manifest file, add `dotfiles` to releases. In template, add `shrc` job.
 Deploy the `shrc` job in a template, then find the amazing changes with `sudo su root`.
 
 # What if I want to add some more bash sugar?
@@ -35,6 +35,8 @@ In order to modify and deploy new rc files, you have to create a new release, up
 4. completion:
   - monit completion
   - wwsh completion
+5. properties dump:
+  - Properties are dumped to `~/.properties.json` for debugging.
 
 # Something else
 For some reason, by default the bash in stemcell doesnot recognize `.profile` or `.bash_profile`, and it will only read the already existed `.bashrc`. Therefore this release use `.bash_aliases` to trigger customized `shrc` script.

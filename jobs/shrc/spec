@@ -4,6 +4,7 @@ templates:
   bin/deployrcs: bin/deployrcs
   dotfiles/inputrc: dotfiles/inputrc
   dotfiles/shrc.erb: dotfiles/shrc
+  dotfiles/properties.json.erb: dotfiles/properties.json
   dotfiles/wwsh.complete: dotfiles/wwsh.complete
   dotfiles/monit.complete: dotfiles/monit.complete
   rootbin/link_apps: rootbin/link_apps
