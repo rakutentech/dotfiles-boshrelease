@@ -10,6 +10,7 @@ templates:
   rootbin/link_apps: rootbin/link_apps
   rootbin/wwsh: rootbin/wwsh
   rootbin/ack: rootbin/ack
+  rootbin/haste: rootbin/haste
 
 packages:
   []

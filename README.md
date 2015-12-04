@@ -19,7 +19,7 @@ Deploy the `shrc` job in a template, then find the amazing changes with `sudo su
 In order to modify and deploy new rc files, you have to create a new release, upload it, then `bosh deploy`
 
 # What is done by default
-1. Inputrc:
+1. inputrc:
   - Enable word jump (alt + Left/Right);
   - Enable history search (alt + Up/Down; alt + p/n; PageUp/PageDown)
   - Completion-ignore-case on
@@ -32,6 +32,7 @@ In order to modify and deploy new rc files, you have to create a new release, up
   - ack
   - (home made) link_apps: link warden container directories to /root/app.
   - (home made) wwsh: a shortcut to wsh into warden containers.
+  - (home made) haste: a hastebin client, is convenient when you have a internal hastebin server.
 4. completion:
   - monit completion
   - wwsh completion
