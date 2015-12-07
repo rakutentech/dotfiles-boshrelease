@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+## Hastebin Bash Client
+## Modified from bash ver in https://github.com/seejohnrun/haste-client
+
+if [ -z "$HASTE_SERVER" ] ; then
+  echo Please set HASTE_SERVER >&2
+  exit 1
+fi
+
+contents=$(cat "${1:-/dev/stdin}");
+curl -X POST -s -d "$contents" "$HASTE_SERVER/documents" | \
+  awk -F '"' '{print ENVIRON["HASTE_SERVER"] "/raw/" $4}'

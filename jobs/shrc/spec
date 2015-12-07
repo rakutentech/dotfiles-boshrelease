@@ -4,14 +4,20 @@ templates:
   bin/deployrcs: bin/deployrcs
   dotfiles/inputrc: dotfiles/inputrc
   dotfiles/shrc.erb: dotfiles/shrc
+  dotfiles/extrarc.erb: dotfiles/extrarc
+  dotfiles/spec.yml.erb: dotfiles/spec.yml
   dotfiles/wwsh.complete: dotfiles/wwsh.complete
   dotfiles/monit.complete: dotfiles/monit.complete
   rootbin/link_apps: rootbin/link_apps
   rootbin/wwsh: rootbin/wwsh
   rootbin/ack: rootbin/ack
+  rootbin/haste: rootbin/haste
 
 packages:
   []
 
 properties:
-  {}
+  shrc.extra_commands:
+    description: Bash that will be run after shrc when login
+    warning: THESE COMMANDS EXECUTED WITH ROOT PRIVILEGE, DO NOT CRASH YOUR MACHINE
+    default: ""

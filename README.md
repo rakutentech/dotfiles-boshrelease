@@ -12,14 +12,14 @@ Inspired by `cloudfoundry-community/root-env-boshrelease`, `dotfiles-boshrelease
 In contrast, `dotfiles-boshrelease` only templates scripts from /var/vcap/jobs/shrc/dotfiles/*. And `shrc/monit` ensure that when a new version of shrc is deployed, it will update it into /root.
 
 # How to use
-In manifest file, add `dotfiles-boshrelease` to releases. In template, add `shrc` job.
+In manifest file, add `dotfiles` to releases. In template, add `shrc` job.
 Deploy the `shrc` job in a template, then find the amazing changes with `sudo su root`.
 
 # What if I want to add some more bash sugar?
 In order to modify and deploy new rc files, you have to create a new release, upload it, then `bosh deploy`
 
 # What is done by default
-1. Inputrc:
+1. inputrc:
   - Enable word jump (alt + Left/Right);
   - Enable history search (alt + Up/Down; alt + p/n; PageUp/PageDown)
   - Completion-ignore-case on
@@ -28,13 +28,18 @@ In order to modify and deploy new rc files, you have to create a new release, up
   - PS1: Meaningful PS1
   - packages bins: add packages/*/bin to PATH.
   - cd $HOME: Home sweet home.
-3. /root/bin:
+3. extrarc:
+  - You can inject commands from manifest by overriding `spec.extra_commands` property. However be careful not to crash your machine ^_^
+4. /root/bin:
   - ack
   - (home made) link_apps: link warden container directories to /root/app.
   - (home made) wwsh: a shortcut to wsh into warden containers.
-4. completion:
+  - (home made) haste: a hastebin client, is convenient when you have a internal hastebin server.
+5. completion:
   - monit completion
   - wwsh completion
+6. spec dump:
+  - Deploy spec are dumped to `$HOME/.spec.yml -> /var/vcap/jobs/shrc/dotfiles/spec.yml` for debugging.
 
 # Something else
 For some reason, by default the bash in stemcell doesnot recognize `.profile` or `.bash_profile`, and it will only read the already existed `.bashrc`. Therefore this release use `.bash_aliases` to trigger customized `shrc` script.
