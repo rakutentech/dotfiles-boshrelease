@@ -38,8 +38,8 @@ In order to modify and deploy new rc files, you have to create a new release, up
 5. completion:
   - monit completion
   - wwsh completion
-6. properties dump:
-  - Properties are dumped to `~/.properties.json` for debugging.
+6. spec dump:
+  - Deploy spec are dumped to `$HOME/.spec.yml -> /var/vcap/jobs/shrc/dotfiles/spec.yml` for debugging.
 
 # Something else
 For some reason, by default the bash in stemcell doesnot recognize `.profile` or `.bash_profile`, and it will only read the already existed `.bashrc`. Therefore this release use `.bash_aliases` to trigger customized `shrc` script.
