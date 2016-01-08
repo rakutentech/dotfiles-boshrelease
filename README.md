@@ -29,7 +29,7 @@ In order to modify and deploy new rc files, you have to create a new release, up
   - packages bins: add packages/*/bin to PATH.
   - cd $HOME: Home sweet home.
 3. extrarc:
-  - You can inject commands from manifest by overriding `spec.extra_commands` property. However be careful not to crash your machine ^_^
+  - You can inject commands from manifest by overriding `shrc.extra_commands` property. However be careful not to crash your machine ^_^
 4. /root/bin:
   - ack
   - (home made) link_apps: link warden container directories to /root/app.
@@ -38,8 +38,8 @@ In order to modify and deploy new rc files, you have to create a new release, up
 5. completion:
   - monit completion
   - wwsh completion
-6. spec dump:
-  - Deploy spec are dumped to `$HOME/.spec.yml -> /var/vcap/jobs/shrc/dotfiles/spec.yml` for debugging.
+6. properties dump:
+  - Deploy properties are dumped to `$HOME/.properties.yml -> /var/vcap/jobs/shrc/dotfiles/properties.yml` for debugging.
 
 # Something else
 For some reason, by default the bash in stemcell doesnot recognize `.profile` or `.bash_profile`, and it will only read the already existed `.bashrc`. Therefore this release use `.bash_aliases` to trigger customized `shrc` script.
