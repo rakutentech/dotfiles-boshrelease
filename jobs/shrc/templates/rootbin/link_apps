@@ -23,8 +23,11 @@ Dir.glob("#{root_apps}/*").each do |app|
 end
 
 applications['instances'].each do |instance|
-  if instance['warden_container_path'] && instance['state'] == "RUNNING"
-    app_symlink = File.join root_apps, "#{instance['application_name']}-#{instance['instance_index']}-#{instance['warden_handle']}"
-    FileUtils.symlink instance['warden_container_path'], app_symlink
+  if instance['warden_container_path']
+    # If app is not running, still link path but with a prefixing underscore
+    app_status_prefix = (instance['state'] == 'RUNNING' ? "" : "_")
+    app_symlink = "#{app_status_prefix}#{instance['application_name']}-#{instance['instance_index']}-#{instance['warden_handle']}"
+    app_symlink_path = File.join root_apps, app_symlink
+    FileUtils.symlink instance['warden_container_path'], app_symlink_path
   end
 end
