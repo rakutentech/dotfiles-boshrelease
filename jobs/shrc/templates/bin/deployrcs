@@ -16,7 +16,7 @@ cp $DOTFILES_DIR/monit.complete  /root/.monit.complete
 # Files that changes along with properties
 # Since the bosh deploy cannot trigger deployrc
 # Symlink these files instead of copying
-ln -sf $DOTFILES_DIR/spec.yml /root/.spec.yml
+ln -sf $DOTFILES_DIR/properties.yml /root/.properties.yml
 ln -sf $DOTFILES_DIR/extrarc  /root/.extrarc
 
 mkdir -p /root/bin
