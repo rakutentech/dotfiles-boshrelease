@@ -21,7 +21,7 @@ On the other hand, you can also just fork and modify this project, then use bosh
 
 # BIG NOTES
 1. It is known that if you modify `shrc.extra_commands` (although this should not happen frequently), all jobs those have `shrc` installed will be re-deployed since the templated files are changed. Considering that it is common to have `shrc` installed on ALL jobs, this will trigger re-deploy on ALL jobs, and sometimes it is known to be a pain in the ass.
-2. For now `shrc` is bound to root account, which means commands are run with root priviledge. Be careful not to inject `rm -rf /$EMPTY` here.
+2. For now `shrc` is bound to root account, which means commands are run with root priviledge. The extra commands are executed with `set -eu` for your flight safety.
 
 # What is done by default
 1. inputrc:
