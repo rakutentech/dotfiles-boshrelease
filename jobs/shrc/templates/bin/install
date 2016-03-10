@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+SHRC_DIR=/var/vcap/jobs/shrc
+
+# The root, the vcap and the temp
+echo "if [ -f $SHRC_DIR/dotfiles/shrc ]; then source $SHRC_DIR/dotfiles/shrc; fi" > /root/.bash_aliases
+echo "if [ -f $SHRC_DIR/dotfiles/shrc ]; then source $SHRC_DIR/dotfiles/shrc; fi" > /home/vcap/.bash_aliases
+echo "if [ -f $SHRC_DIR/dotfiles/shrc ]; then source $SHRC_DIR/dotfiles/shrc; fi" > /etc/skel/.bash_aliases
+
+chmod +x $SHRC_DIR/userbin/*
+date > $SHRC/done

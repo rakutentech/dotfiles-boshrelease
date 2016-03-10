@@ -1,22 +1,26 @@
 ---
 name: shrc
 templates:
-  bin/deployrcs: bin/deployrcs
+  bin/install: bin/install
+  dotfiles/shrc: dotfiles/shrc
+  dotfiles/envvars.erb: dotfiles/envvars
   dotfiles/inputrc: dotfiles/inputrc
-  dotfiles/shrc.erb: dotfiles/shrc
   dotfiles/extrarc.erb: dotfiles/extrarc
   dotfiles/properties.yml.erb: dotfiles/properties.yml
-  dotfiles/wwsh.complete: dotfiles/wwsh.complete
-  dotfiles/monit.complete: dotfiles/monit.complete
-  rootbin/link_apps: rootbin/link_apps
-  rootbin/wwsh: rootbin/wwsh
-  rootbin/ack: rootbin/ack
-  rootbin/haste: rootbin/haste
+  completes/wwsh.complete: completes/wwsh.complete
+  completes/monit.complete: completes/monit.complete
+  userbin/link_apps: userbin/link_apps
+  userbin/wwsh: userbin/wwsh
+  userbin/ack: userbin/ack
+  userbin/haste: userbin/haste
 
 packages:
   []
 
 properties:
+  shrc.prompt_color:
+    description: color for PS1
+    default: green
   shrc.extra_commands:
     description: Bash that will be run after shrc when login
     warning: THESE COMMANDS EXECUTED WITH ROOT PRIVILEGE, DO NOT CRASH YOUR MACHINE
