@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # This is completion script for wwsh
-_wwsh () 
+_wwsh ()
 {
   local cur prev opts
-  local WWSH_APPDIR=/root/apps/
+  local WWSH_APPDIR=$HOME/apps/
   COMPREPLY=()
   cur="${COMP_WORDS[COMP_CWORD]}"
   prev="${COMP_WORDS[COMP_CWORD-1]}"

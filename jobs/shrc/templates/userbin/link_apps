@@ -2,21 +2,26 @@
 require 'json'
 require 'fileutils'
 
+# quit quiet
+if ARGV[0] == "-q"
+  exit 0
+end
+
 dea_apps_json = '/var/vcap/data/dea_next/db/instances.json'
-root_apps = '/root/apps'
+apps_dir = "#{ENV['HOME']}/apps"
 depot_dir = '/var/vcap/data/warden/depot'
 
 unless File.exist?(dea_apps_json)
   exit
 end
 
-puts "Updating #{root_apps}"
+puts "Updating #{apps_dir}"
 applications = JSON.load(File.read(dea_apps_json))
 
-# Mkdir root_apps
-FileUtils.mkdir_p root_apps
-# Clean up root_apps
-Dir.glob("#{root_apps}/*").each do |app|
+# Mkdir apps_dir
+FileUtils.mkdir_p apps_dir
+# Clean up apps_dir
+Dir.glob("#{apps_dir}/*").each do |app|
   if File.symlink?(app) && File.readlink(app).start_with?(depot_dir)
     FileUtils.remove_file app
   end
@@ -27,7 +32,7 @@ applications['instances'].each do |instance|
     # If app is not running, still link path but with a prefixing underscore
     app_status_prefix = (instance['state'] == 'RUNNING' ? "" : "_")
     app_symlink = "#{app_status_prefix}#{instance['application_name']}-#{instance['instance_index']}-#{instance['warden_handle']}"
-    app_symlink_path = File.join root_apps, app_symlink
+    app_symlink_path = File.join apps_dir, app_symlink
     FileUtils.symlink instance['warden_container_path'], app_symlink_path
   end
 end

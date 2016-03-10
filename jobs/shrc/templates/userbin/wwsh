@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 # wwsh: a shortcut to wsh into DEA apps.
-# This command depends on link_apps generated /root/apps/<appname>.
+# This command depends on link_apps generated $HOME/apps/<appname>.
 # Usage: wwsh <appname>
 # ENV: WSH_USER, by default vcap
 
 WSH_BIN=/var/vcap/packages/warden/warden/src/wsh/wsh
-APP_SOCK="/root/apps/$1/run/wshd.sock"
+APP_SOCK="$HOME/apps/$1/run/wshd.sock"
 WSH_USER=${WSH_USER:-vcap}
 
 if ! [ -x "$WSH_BIN" ]; then
@@ -16,7 +16,7 @@ fi
 
 if ! [ -e "$APP_SOCK" ]; then
   echo Cannot find sock $APP_SOCK, choose one app please
-  ls /root/apps/
+  ls $HOME/apps/
   exit 1
 fi
 
