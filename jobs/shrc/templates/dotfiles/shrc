@@ -50,7 +50,9 @@ compl $SHRC_DIR/completes/monit.complete
 slink /var/vcap/data/warden/depot/ $HOME/depot
 # Link warden containers to $HOME/apps
 if [[ -e /var/vcap/data/warden/depot/ ]] && which link_apps >/dev/null 2>&1; then
-  sudo -n link_apps -q # Do nothing, test if link_apps has permission to call ruby.
+  # Since root is needed for reading "instances.json",
+  # Attempt to run link_apps without password, throw a notice if failed.
+  sudo -n link_apps -q
   if [ $? -eq 0 ]; then
     sudo -n link_apps
   else

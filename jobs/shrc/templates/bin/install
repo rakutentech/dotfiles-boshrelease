@@ -11,4 +11,4 @@ echo "if [ -f $SHRC_DIR/dotfiles/shrc ]; then source $SHRC_DIR/dotfiles/shrc; fi
 echo "if [ -f $SHRC_DIR/dotfiles/shrc ]; then source $SHRC_DIR/dotfiles/shrc; fi" > /etc/skel/.bash_aliases
 
 chmod +x $SHRC_DIR/userbin/*
-date > $SHRC/done
+date > $SHRC_DIR/done
