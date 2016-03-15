@@ -64,7 +64,7 @@ fi
 alias monit="sudo monit"
 alias sms="monit summary"
 alias m="monit"
-alias show-bosh-properties="cat $SHRC_DIR/dotfiles/properties.yml"
+alias show-bosh-properties="sudo cat $SHRC_DIR/dotfiles/properties.yml"
 
 # RTB
 echo "cd $HOME"

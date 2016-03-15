@@ -28,22 +28,22 @@ On the other hand, you can also just fork and modify this project, then use bosh
   - Enable word jump (alt + Left/Right);
   - Enable history search (alt + Up/Down; alt + p/n; PageUp/PageDown)
   - Completion-ignore-case on
-2. shrc:
+1. shrc:
   - Frequently used dirs: link to $HOME (vcap, packages, jobs, sys/log, etc..)
   - PS1: Meaningful and colorful PS1. You can set your favorite PS1 color in spec.
   - packages bins: add packages/*/bin to PATH.
   - cd $HOME: Home sweet home.
-3. extrarc:
+1. extrarc:
   - You can inject commands from manifest by overriding `shrc.extra_commands` property. However be careful not to crash your machine ^_^
-4. shrc/userbin:
+1. shrc/userbin:
   - ack
   - (home made) link_apps: link warden container directories to $HOME/app.
   - (home made) wwsh: a shortcut to wsh into warden containers.
   - (home made) haste: a hastebin client, is convenient when you have a internal hastebin server.
-5. completion:
+1. completion:
   - monit completion
   - wwsh completion
-6. properties dump:
+1. properties dump:
   - Use `show-bosh-properties` command to see properties that's used by bosh-template. Useful for debugging.
 
 # Something else
