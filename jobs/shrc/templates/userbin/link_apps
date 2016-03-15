@@ -1,38 +1,36 @@
-#!/usr/bin/env ruby
-require 'json'
-require 'fileutils'
+#!/usr/bin/env python3
+import os
+from os import environ, path
+from sys import argv
+import json
 
 # quit quiet
-if ARGV[0] == "-q"
-  exit 0
-end
+if '-q' in argv:
+    exit()
 
 dea_apps_json = '/var/vcap/data/dea_next/db/instances.json'
-apps_dir = "#{ENV['HOME']}/apps"
+apps_dir = path.join(environ.get('HOME'), "apps")
 depot_dir = '/var/vcap/data/warden/depot'
 
-unless File.exist?(dea_apps_json)
-  exit
-end
+if not path.exists(dea_apps_json):
+    exit()
 
-puts "Updating #{apps_dir}"
-applications = JSON.load(File.read(dea_apps_json))
+print("Updating:", apps_dir)
+applications = json.load(open(dea_apps_json))
 
 # Mkdir apps_dir
-FileUtils.mkdir_p apps_dir
-# Clean up apps_dir
-Dir.glob("#{apps_dir}/*").each do |app|
-  if File.symlink?(app) && File.readlink(app).start_with?(depot_dir)
-    FileUtils.remove_file app
-  end
-end
+os.makedirs(apps_dir, exist_ok=True)
 
-applications['instances'].each do |instance|
-  if instance['warden_container_path']
-    # If app is not running, still link path but with a prefixing underscore
-    app_status_prefix = (instance['state'] == 'RUNNING' ? "" : "_")
-    app_symlink = "#{app_status_prefix}#{instance['application_name']}-#{instance['instance_index']}-#{instance['warden_handle']}"
-    app_symlink_path = File.join apps_dir, app_symlink
-    FileUtils.symlink instance['warden_container_path'], app_symlink_path
-  end
-end
+# Clean up apps_dir
+for app_file in os.listdir(apps_dir):
+    app_path = path.join(apps_dir, app_file)
+    if path.islink(app_path) and os.readlink(app_path).startswith(depot_dir):
+        os.unlink(app_path)
+
+for instance in applications['instances']:
+    if 'warden_container_path' in instance:
+        # If app is not running, still link path but with a prefixing underscore
+        app_status_prefix = "" if instance['state'] == 'RUNNING' else "_"
+        app_symlink = "{}{}-{}-{}".format(app_status_prefix, instance['application_name'], instance['instance_index'], instance['warden_handle'])
+        app_symlink_path = path.join(apps_dir, app_symlink)
+        os.symlink(instance['warden_container_path'], app_symlink_path)
