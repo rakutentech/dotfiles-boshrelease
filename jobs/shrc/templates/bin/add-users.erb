@@ -1,0 +1,24 @@
+#!/bin/bash
+
+function create_user {
+USER_NAME="$1"
+USER_KEY="$2"
+# If user doesnot exist, try to create it.
+if ! id -u "$USER_NAME" >/dev/null 2>/dev/null; then
+  useradd -m -G vcap,bosh_sudoers -s /bin/bash "$USER_NAME"
+  USER_HOME=/home/"$USER_NAME"
+  mkdir "$USER_HOME"/.ssh
+  echo "$USER_KEY" > "$USER_HOME"/.ssh/authorized_keys
+  chown -R "$USER_NAME:$USER_NAME" "$USER_HOME"/.ssh
+  chmod 700 "$USER_HOME"/.ssh
+  chmod 600 "$USER_HOME"/.ssh/authorized_keys
+fi
+}
+
+<% p('shrc.extra_users').select do | user |
+  # Sanity check for username and public key
+  user['name'].match(/^[a-z_][a-z0-9_.-]{0,30}$/) and \
+  user['public_key'].match(/^ssh-rsa AAAA[0-9A-Za-z\/+]+[=]{0,3} [0-9A-Za-z@_.-]*$/)
+end.each do | user | %>
+create_user "<%= user['name'] %>" "<%= user['public_key'] %>"
+<% end %>

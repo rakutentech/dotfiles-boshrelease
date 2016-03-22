@@ -2,6 +2,7 @@
 name: shrc
 templates:
   bin/install: bin/install
+  bin/add-users.erb: bin/add-users
   dotfiles/shrc: dotfiles/shrc
   dotfiles/envvars.erb: dotfiles/envvars
   dotfiles/inputrc: dotfiles/inputrc
@@ -25,3 +26,10 @@ properties:
     description: Bash that will be run after shrc when login
     warning: THESE COMMANDS EXECUTED WITH ROOT PRIVILEGE, DO NOT CRASH YOUR MACHINE
     default: ""
+
+  shrc.extra_users:
+    description: A list of users you want to adduser to bosh vms and each entry defines "name" and "public_key".
+    example:
+    - name: admin-user
+      public_key: public_key of admin-user
+    default: []
