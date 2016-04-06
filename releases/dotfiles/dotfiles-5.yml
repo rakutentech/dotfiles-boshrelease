@@ -1,0 +1,15 @@
+---
+packages: []
+jobs:
+- name: shrc
+  version: e3c048cca774f3b079e66f33e9e1618a9365b650
+  fingerprint: e3c048cca774f3b079e66f33e9e1618a9365b650
+  sha1: c73c1ead6daa2bc381d7833354a40b225736e60e
+license:
+  version: 0cbe6afbdfbb809cac72b532e457eec3763e66d5
+  fingerprint: 0cbe6afbdfbb809cac72b532e457eec3763e66d5
+  sha1: 41b42da77aca641bf9e33087e99068a67317e2fb
+commit_hash: 486db52d
+uncommitted_changes: true
+name: dotfiles
+version: '5'
