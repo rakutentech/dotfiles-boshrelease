@@ -1,0 +1,48 @@
+#!/bin/bash
+set -eu
+
+function create_user {
+  local USER_NAME="$1"
+
+  # If user doesnot exist, try to create it.
+  if ! id -u "$USER_NAME" >/dev/null 2>&1; then
+    useradd -m -G vcap,bosh_sudoers -s /bin/bash "$USER_NAME"
+  fi
+}
+
+function inject_key {
+  local USER_NAME="$1"
+  local USER_KEY="$2"
+
+  local USER_HOME=/home/"$USER_NAME"
+  mkdir -p "$USER_HOME"/.ssh
+  echo "$USER_KEY" > "$USER_HOME"/.ssh/authorized_keys
+  chown -R "$USER_NAME:$USER_NAME" "$USER_HOME"/.ssh
+  chmod 700 "$USER_HOME"/.ssh
+  chmod 600 "$USER_HOME"/.ssh/authorized_keys
+}
+
+function remove_key {
+  local USER_NAME="$1"
+  local USER_HOME=/home/"$USER_NAME"
+
+  rm -f "$USER_HOME"/.ssh/authorized_keys
+}
+
+<% p('shrc.extra_users').each do | user |
+  username = user['name']
+  userkey = user['public_key']
+
+  # Regex for sanity check
+  name_regex = /^[a-z_][a-z0-9_.-]{0,30}$/
+  key_regex = /^ssh-rsa AAAA[0-9A-Za-z\/+]+[=]{0,3} [0-9A-Za-z@_.-]*$/
+
+  if username.match(name_regex) %>
+create_user "<%= username %>"
+<%  if (not userkey.nil?) and userkey.match(key_regex) %>
+inject_key "<%= username %>" "<%= userkey %>"
+<%  else %>
+remove_key "<%= username %>"
+<%  end
+  end
+end %>

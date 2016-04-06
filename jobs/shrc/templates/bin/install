@@ -12,4 +12,5 @@ echo "if [ -f $SHRC_DIR/dotfiles/shrc ]; then source $SHRC_DIR/dotfiles/shrc; fi
 
 chmod +x $SHRC_DIR/userbin/*
 chmod 400 $SHRC_DIR/dotfiles/properties.yml
+$SHRC_DIR/bin/add-users
 date > $SHRC_DIR/done

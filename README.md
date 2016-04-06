@@ -28,22 +28,24 @@ On the other hand, you can also just fork and modify this project, then use bosh
   - Enable word jump (alt + Left/Right);
   - Enable history search (alt + Up/Down; alt + p/n; PageUp/PageDown)
   - Completion-ignore-case on
-1. shrc:
+2. shrc:
   - Frequently used dirs: link to $HOME (vcap, packages, jobs, sys/log, etc..)
   - PS1: Meaningful and colorful PS1. You can set your favorite PS1 color in spec.
   - packages bins: add packages/*/bin to PATH.
   - cd $HOME: Home sweet home.
-1. extrarc:
+3. extra_users:
+  - Set `shrc.extra_users` property to let dotfiles create admin account and inject public key for you. Note that there is a sanity check when creating account. If user's `name` and `public_key` failed to pass the check, they will be ignored. For more details, check `bin/add-users.erb`.
+4. extrarc:
   - You can inject commands from manifest by overriding `shrc.extra_commands` property. However be careful not to crash your machine ^_^
-1. shrc/userbin:
+5. shrc/userbin:
   - ack
   - (home made) link_apps: link warden container directories to $HOME/app.
   - (home made) wwsh: a shortcut to wsh into warden containers.
   - (home made) haste: a hastebin client, is convenient when you have a internal hastebin server.
-1. completion:
+6. completion:
   - monit completion
   - wwsh completion
-1. properties dump:
+7. properties dump:
   - Use `show-bosh-properties` command to see properties that's used by bosh-template. Useful for debugging.
 
 # Something else
