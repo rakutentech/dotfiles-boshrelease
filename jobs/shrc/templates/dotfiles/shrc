@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+SHRC_DIR=/var/vcap/jobs/shrc
+
+# get environment variables from ennvar
+source $SHRC_DIR/dotfiles/envvars
+
+# export extra shrc commands and bosh/bin to PATH
+export PATH="$PATH:$SHRC_DIR/userbin"
+export PATH="/var/vcap/bosh/bin:$PATH"
+
+# use new inputrc.
+export INPUTRC="$SHRC_DIR/dotfiles/inputrc"
+
+# Add packages binaries to path
+for pkg_bin in $(ls -d /var/vcap/packages/*/bin); do
+  export PATH="$PATH:$pkg_bin"
+done
+unset pkg_bin
+
+# Set PS1
+PS1="\[${SHRC_PS1_COLOR}\](env=${SHRC_MY_DEPLOYMENT},role=${SHRC_MY_ROLE},ip=${SHRC_MY_IP})\u\[${SHRC_NO_COLOR}\]:\[${SHRC_CWD_COLOR}\]\w\[${SHRC_NO_COLOR}\]\n\\$ "
+
+# Symbol link safely
+slink () {
+  # if source exist
+  if [[ -e $1 ]]; then
+    # if symbol link doesnot exist
+    if ! [[ -e $2 || -h $2 ]]; then
+      ln -s $1 $2
+    fi
+  fi
+}
+slink /var/vcap/                $HOME/vcap
+slink /var/vcap/packages/       $HOME/pkg
+slink /var/vcap/jobs/           $HOME/jobs
+slink /var/vcap/sys/log/        $HOME/log
+slink /var/vcap/monit/monit.log $HOME/monit.log
+
+# Customized completions
+# Run completion if exist
+compl () {
+  if [[ -e $1 ]]; then
+    . $1
+  fi
+}
+compl $SHRC_DIR/completes/wwsh.complete
+compl $SHRC_DIR/completes/monit.complete
+
+# Warden containers
+slink /var/vcap/data/warden/depot/ $HOME/depot
+# Link warden containers to $HOME/apps
+if [[ -e /var/vcap/data/warden/depot/ ]] && which link_apps >/dev/null 2>&1; then
+  # Since root is needed for reading "instances.json",
+  # Attempt to run link_apps without password, throw a notice if failed.
+  sudo -n link_apps -q
+  if [ $? -eq 0 ]; then
+    sudo -n link_apps
+  else
+    echo "(っ˘ω˘ς ) Cannot auto link_apps, try sudo link_apps with your pw."
+  fi
+fi
+
+# aliases
+alias monit="sudo monit"
+alias sms="monit summary"
+alias m="monit"
+alias show-bosh-properties="sudo cat $SHRC_DIR/dotfiles/properties.yml"
+
+# RTB
+echo "cd $HOME"
+cd $HOME
+
+# Extra commands from manifest
+if [ -e $SHRC_DIR/dotfiles/extrarc ]; then
+  . $SHRC_DIR/dotfiles/extrarc
+fi
