@@ -34,7 +34,7 @@ remove_keys
 
   # Regex for sanity check
   name_regex = /^[a-z_][a-z0-9_.-]{0,30}$/
-  key_regex = /^ssh-rsa AAAA[0-9A-Za-z\/+]+[=]{0,3}[0-9A-Za-z@_.- ]*$/
+  key_regex = /^ssh-rsa AAAA[0-9A-Za-z\/+]+[=]{0,3}[ 0-9A-Za-z@_.-]*$/
 
   if username.match(name_regex) %>
 create_user "<%= username %>"
