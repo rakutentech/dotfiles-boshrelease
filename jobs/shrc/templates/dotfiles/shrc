@@ -50,10 +50,9 @@ compl $SHRC_DIR/completes/monit.complete
 slink /var/vcap/data/warden/depot/ $HOME/depot
 # Link warden containers to $HOME/apps
 if [[ -e /var/vcap/data/warden/depot/ ]] && which link_apps >/dev/null 2>&1; then
-  # Since root is needed for reading "instances.json",
-  # Attempt to run link_apps without password, throw a notice if failed.
-  sudo -n link_apps -q
-  if [ $? -eq 0 ]; then
+  # Since root privilege is needed for reading "instances.json",
+  # If user is NOPASSWD sudoer, run link_apps, else throw a notice if failed.
+  if sudo -n true; then
     sudo -n link_apps
   else
     echo "(っ˘ω˘ς ) Cannot auto link_apps, try sudo link_apps with your pw."
@@ -64,6 +63,7 @@ fi
 alias monit="sudo monit"
 alias sms="monit summary"
 alias m="monit"
+alias link_apps="sudo link_apps"
 alias show-bosh-properties="sudo cat $SHRC_DIR/dotfiles/properties.yml"
 
 # RTB

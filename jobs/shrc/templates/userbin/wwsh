@@ -20,6 +20,6 @@ if ! [ -e "$APP_SOCK" ]; then
   exit 1
 fi
 
-CMD="$WSH_BIN --user $WSH_USER --socket $APP_SOCK"
+CMD="sudo $WSH_BIN --user $WSH_USER --socket $APP_SOCK"
 echo $CMD
 $CMD

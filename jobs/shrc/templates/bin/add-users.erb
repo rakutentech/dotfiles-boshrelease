@@ -3,10 +3,19 @@ set -eu
 
 function create_user {
   local USER_NAME="$1"
+  local USER_GROUPS
+
+  # Add new user to bosh_sudoers group (NOPASSWD)
+  # But bypass it on old stemcells to avoid install failure
+  if getent group bosh_sudoers >/dev/null 2>&1; then
+    USER_GROUPS=vcap,bosh_sudoers
+  else
+    USER_GROUPS=vcap
+  fi
 
   # If user doesnot exist, try to create it.
   if ! id -u "$USER_NAME" >/dev/null 2>&1; then
-    useradd -m -G vcap,bosh_sudoers -s /bin/bash "$USER_NAME"
+    useradd -m -G $USER_GROUPS -s /bin/bash "$USER_NAME"
   fi
 }
 
