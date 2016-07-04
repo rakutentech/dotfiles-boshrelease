@@ -67,10 +67,6 @@ alias m="monit"
 alias link_apps="sudo link_apps"
 alias show-bosh-properties="sudo cat $SHRC_DIR/dotfiles/properties.yml"
 
-# RTB
-echo "cd $HOME"
-cd $HOME
-
 # Extra commands from manifest
 if [ -e $SHRC_DIR/dotfiles/extrarc ]; then
   . $SHRC_DIR/dotfiles/extrarc

@@ -1,18 +1,21 @@
 # Dotfiles Boshrelease
 For higher productivity with `bosh ssh`.
 
-# What does this release do
-Inspired by `cloudfoundry-community/root-env-boshrelease`, `dotfiles-boshrelease` aims to make a better admin experience for `bosh ssh`, which is crucial for both dev & ops on BOSH based infrastructures.
+# What does Dotfiles-boshrelease Do
+The `dotfiles-boshrelease` lets you set up a cozy terminal environment within BOSH VMs. It sets up not only `root` user, but also `vcap` user, temporary `bosh_<random>` users, and you own users (`shrc.extra_users`).
 
-`Dotfiles-boshrelease` and `root-env-boshrelease` are similar in a sense that both enables the customization of `/root` directory. However they do it in different ways.
+With `dotfiles`, life is much easier when doing dev & ops on BOSH based infrastructures.
 
-`root-env-boshrelease` customizes /root by downloading a tarball from a url daily and then replace the /root. The good thing of such implementation is one can update `/root` without recreating release/re-deploying. However a concern would be downloading root-executing scripts to production servers might not be the best practice. Also, dotfiles usually should not be changing in a daily pace.
+This boshrelease is inspired by [`root-env`](https://github.com/cloudfoundry-community/root-env-boshrelease). However, unlike `root-env` which downloads a tarball daily to the `/root` dir, `dotfiles-boshrelease` uses only local files.
 
-In contrast, `dotfiles-boshrelease` only use local rc files from `/var/vcap/jobs/shrc`. They are deployed by bosh. If you remove `shrc` from manifest, your admin environment will be (almost) clean again.
+It's more secure (no root executable script from internet); All changes to VMs are visible in properties; Changes take place explicitly (only when you do the `bosh deploy`); And it's easy to uninstall - simply remove `shrc` job from manifest, and your admin environment is (almost) clean again.
 
 # How to use
 In manifest file, add `dotfiles` to releases. In template, add `shrc` job.
+
 Deploy the `shrc` job in a template, then find the amazing changes with `bosh ssh`.
+
+You can also check `jobs/shrc/spec` to tune properties as you like.
 
 # What if I want to add some more bash sugar?
 A property `shrc.extra_commands` are provided for you to inject your own commands easily. The value of `extra_commands` will be executed after `.shrc`.  
@@ -31,10 +34,9 @@ On the other hand, you can also just fork and modify this project, then use bosh
   - Frequently used dirs: link to $HOME (vcap, packages, jobs, sys/log, etc..)
   - PS1: Meaningful and colorful PS1. You can set your favorite PS1 color in spec.
   - packages bins: add packages/*/bin to PATH.
-  - cd $HOME: Home sweet home.
 3. extra_users:
   - Set `shrc.extra_users` property to let dotfiles create admin account and inject public key for you. Note that there is a sanity check when creating account. If user's `name` and `public_key` failed to pass the check, they will be ignored. For more details, check `bin/add-users.erb`.
-  - Caveat: dotfiles will remove /home/*/.ssh/authorized_keys before it injects public keys, in order to keep system safe. If you unfortunately set /home/vcap/.ssh/authorized_keys, it will be removed.
+  - CAVEAT: dotfiles will remove /home/*/.ssh/authorized_keys before it injects public keys, in order to keep system safe. If you unfortunately set /home/vcap/.ssh/authorized_keys, it will be removed.
 4. extrarc:
   - You can inject commands from manifest by overriding `shrc.extra_commands` property. However be careful not to crash your machine ^_^
 5. shrc/userbin:
