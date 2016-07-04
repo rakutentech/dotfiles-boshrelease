@@ -1,4 +1,3 @@
-
 # Dotfiles Boshrelease
 For higher productivity with `bosh ssh`.
 
@@ -48,6 +47,9 @@ On the other hand, you can also just fork and modify this project, then use bosh
   - wwsh completion
 7. properties dump:
   - Use `show-bosh-properties` command to see properties that's used by bosh-template. Useful for debugging.
+8. `set-ps1`
+  - A small function helps you to set informative prompt. By default it puts information such as `spec.deployment`, `job_name/index`, `ip` on PS1.
+  - You can also easily customize your prompt with `set-ps1`. Check `set-ps1 -h` for details.
 
 # Something else
 For some reason, by default the bash in stemcell doesnot recognize `.profile` or `.bash_profile`, and it will only read the already existed `.bashrc`. Therefore this release use `.bash_aliases` to trigger customized `shrc` script.

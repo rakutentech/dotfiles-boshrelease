@@ -1,0 +1,104 @@
+#!/bin/bash
+# functions for ps1 setting
+set-ps1 () {
+  declare -A colors=(
+    [no_color]='\e[0m'
+       [black]='\e[0;30m'          [light_black]='\e[1;30m'
+         [red]='\e[0;31m'            [light_red]='\e[1;31m'
+       [green]='\e[0;32m'          [light_green]='\e[1;32m'
+      [yellow]='\e[0;33m'         [light_yellow]='\e[1;33m'
+        [blue]='\e[0;34m'           [light_blue]='\e[1;34m'
+     [magenta]='\e[0;35m'        [light_magenta]='\e[1;35m'
+        [cyan]='\e[0;36m'           [light_cyan]='\e[1;36m'
+       [white]='\e[0;37m'          [light_white]='\e[1;37m'
+  )
+
+  # HELP
+  if [ "$1" = "-h" -o "$1" = "--help" -o "$1" = "help" ]; then
+    echo 'Usage:
+
+    * To set PS1:
+
+      set-ps1 <prompt_color> <cwd_color> <prompt_prefix>
+
+    Environment Variables (Will be overridden by parameters):
+    - SHRC_PROMPT_COLOR:  same as <prompt_color>
+    - SHRC_CWD_COLOR:     same as <cwd_color>
+    - SHRC_PROMPT_PREFIX: same as <prompt_prefix>
+
+        |<- prompt_color ->| |<- cwd_color ->|
+    PS1=${ prompt_prefix }\u:\w
+    $
+
+    * To get help (this doc):
+
+      set-ps1 [-h|--help|help]
+
+    * Colors are chosen from the following colors:'
+    local color_name
+    for color_name in "${!colors[@]}"; do
+      printf "        ${colors[$color_name]}%s${colors[no_color]}\n" $color_name
+    done
+    echo
+    echo "    If the prompt/cwd color is not set/valid, they will fallback to white"
+    echo "    If this function is called by root, prompt_color will be forcely set to red"
+    return
+  fi
+
+  # MAIN
+  local prompt_color_name="${1:-${SHRC_PROMPT_COLOR:-white}}"
+  local cwd_color_name="${2:-${SHRC_CWD_COLOR:-white}}"
+  local prompt_prefix="${3:-${SHRC_PROMPT_PREFIX}}"
+  local prompt_color
+  local cwd_color
+  local no_color="\[${colors[no_color]}\]"
+
+  # Use red for root
+  if [ "$USER" = root ]; then
+    prompt_color_name="red"
+  fi
+
+  if test "${colors[$prompt_color_name]+is_set}"
+  then # $prompt_color_name in colors
+    prompt_color="\[${colors[$prompt_color_name]}\]"
+  else # fall back to white
+    echo "Cannot understand '${prompt_color_name}', prompt color fall back to white"
+    prompt_color="\[${colors[white]}\]"
+  fi
+
+  if test "${colors[$cwd_color_name]+is_set}"
+  then # $cwd_color_name in colors
+    cwd_color="\[${colors[$cwd_color_name]}\]"
+  else # fall back to white
+    echo "Cannot understand '${cwd_color_name}', cwd color fall back to white"
+    cwd_color="\[${colors[white]}\]"
+  fi
+
+  PS1="${prompt_color}${prompt_prefix}\u${no_color}:${cwd_color}\w${no_color}\n\\$ "
+}
+
+_set-ps1 () {
+  local colorsOpt="black   light_black
+                   red     light_red
+                   green   light_green
+                   yellow  light_yellow
+                   blue    light_blue
+                   magenta light_magenta
+                   cyan    light_cyan
+                   white   light_white"
+  local helpOpt="-h --help help"
+  local cur prev opts
+  COMPREPLY=()
+  cur=${COMP_WORDS[COMP_CWORD]}
+  if [[ $COMP_CWORD -eq 1 ]]; then
+    COMPREPLY=( $( compgen -W "${helpOpt} ${colorsOpt}" -- $cur) )
+  fi
+
+  if [[ $COMP_CWORD -eq 2 ]]; then
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    if ! [ "$prev" = "-h" -o "$prev" = "--help" -o "$prev" = "help" ]; then
+      COMPREPLY=( $( compgen -W "${colorsOpt}" -- $cur) )
+    fi
+  fi
+}
+complete -F _set-ps1 set-ps1

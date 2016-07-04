@@ -6,6 +6,7 @@ templates:
   dotfiles/shrc: dotfiles/shrc
   dotfiles/envvars.erb: dotfiles/envvars
   dotfiles/inputrc: dotfiles/inputrc
+  dotfiles/promptrc: dotfiles/promptrc
   dotfiles/extrarc.erb: dotfiles/extrarc
   dotfiles/properties.yml.erb: dotfiles/properties.yml
   completes/wwsh.complete: completes/wwsh.complete
