@@ -1,6 +1,14 @@
 # This script is executed after shrc.
-# Set "shrc.extra_commands" property in manifest to fill this file.
+# Set "shrc.extra_commands" property to inject startup commands
 set -eu
 <%= p("shrc.extra_commands") %>
+
+# Set "shrc.extra_role_commands./role_matcher/" to inject role based startup commands
+<% p("shrc.extra_role_commands").select do |role_matcher_s, command|
+  name.match(/#{role_matcher_s}/)
+end.each do |role_matcher, command| %>
+# extra_role_commands.<%= role_matcher.inspect %>
+<%= command %>
+<% end %>
 
 set +eu

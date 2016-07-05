@@ -18,12 +18,14 @@ Deploy the `shrc` job in a template, then find the amazing changes with `bosh ss
 You can also check `jobs/shrc/spec` to tune properties as you like.
 
 # What if I want to add some more bash sugar?
-A property `shrc.extra_commands` are provided for you to inject your own commands easily. The value of `extra_commands` will be executed after `.shrc`.  
-On the other hand, you can also just fork and modify this project, then use bosh to create, upload and deploy your own release.
+You can inject your own startup commands using `shrc.extra_commands` (all VMs) and `shrc.extra_role_commands` (role based commands). The executing order is `dotfiles/shrc` -> `extra_commands` -> `extra_role_commands`.
+
+On the other hand, you can just fork and modify this project, then use bosh to create, upload and deploy your own release.
 
 # BIG NOTES
-1. It is known that if you modify `shrc.extra_commands` (although this should not happen frequently), all jobs those have `shrc` installed will be re-deployed since the templated files are changed. Considering that it is common to have `shrc` installed on ALL jobs, this will trigger re-deploy on ALL jobs, and sometimes it is known to be a pain in the ass.
-2. `shrc` is bound to `root`, `vcap` and `bosh_$TEMP` account. Means that when you su to `root`, `extra_commands` will be executed automatically with root priviledge. The extra commands are executed with `set -eu` for your flight safety. Don't shoot your feet.
+1. Bosh will re-dploy a VM if any of the templated files within it are changed. Since usually `dotfiles` are installed on every VMs, changing shrc properties (this should happen very rarely though) triggers not-desirable pain-in-the-ass *FULL re-deployment*. Be cautious to change shrc properties on production.
+2. Changing `shrc.extra_role_commands` also triggers *FULL re-deployment* of all `shrc` machines because `shrc` dumps properties (It's useful for inspecting what properties are passed to the VM). You can choose to disable `shrc.enable_properties_dump` to avoid full re-deployment but lose some convenience.
+3. `shrc` is bound to `root`, `vcap` and `bosh_$TEMP` account. Means that when you su to `root`, `extra_commands` will be executed automatically with root priviledge. The extra commands are executed with `set -eu` for your flight safety. Don't shoot your feet.
 
 # What is done by default
 1. inputrc:
@@ -38,7 +40,8 @@ On the other hand, you can also just fork and modify this project, then use bosh
   - Set `shrc.extra_users` property to let dotfiles create admin account and inject public key for you. Note that there is a sanity check when creating account. If user's `name` and `public_key` failed to pass the check, they will be ignored. For more details, check `bin/add-users.erb`.
   - CAVEAT: dotfiles will remove /home/*/.ssh/authorized_keys before it injects public keys, in order to keep system safe. If you unfortunately set /home/vcap/.ssh/authorized_keys, it will be removed.
 4. extrarc:
-  - You can inject commands from manifest by overriding `shrc.extra_commands` property. However be careful not to crash your machine ^_^
+  - You can inject commands from manifest with `shrc.extra_commands` property. However be careful not to crash your machine ^_^
+  - You can inject commands based on VM role using `shrc.extra_role_commands`.
 5. shrc/userbin:
   - ack
   - (home made) link_apps: link warden container directories to $HOME/app.
@@ -49,8 +52,9 @@ On the other hand, you can also just fork and modify this project, then use bosh
   - wwsh completion
 7. properties dump:
   - Use `show-bosh-properties` command to see properties that's used by bosh-template. Useful for debugging.
-8. `set-ps1`
-  - A small function helps you to set informative prompt. By default it puts information such as `spec.deployment`, `job_name/index`, `ip` on PS1.
+  - You can disable dumping by disabling `shrc.enable_properties_dump`
+8. set-ps1
+  - A small function `set-ps1` helps you to set informative prompt. By default it puts information such as `spec.deployment`, `job_name/index`, `ip` on PS1.
   - You can also easily customize your prompt with `set-ps1`. Check `set-ps1 -h` for details.
 
 # Something else
