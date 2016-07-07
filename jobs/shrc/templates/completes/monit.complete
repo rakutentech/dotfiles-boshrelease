@@ -1,6 +1,7 @@
 _monit()
 {
-    firstArg="start stop restart monitor unmonitor status summary reload quit validate"
+    local firstArg="start stop restart monitor unmonitor status summary reload quit validate"
+    local cur cmdOpt1
     COMPREPLY=()
     cur=${COMP_WORDS[COMP_CWORD]}
     if [[ $COMP_CWORD -eq 1 ]]; then
@@ -9,10 +10,9 @@ _monit()
     fi
 
     if [[ ${COMP_WORDS[1]} -eq "monit" && $COMP_CWORD -eq 2 ]]; then
-        cmdOpt1=
         case ${COMP_WORDS[1]} in
           start|stop|restart|monitor|unmonitor)
-            processes=$(monit summary | perl -ne "print \$1 . ' '  if /^Process '(\w+)'/")
+            processes=$(monit summary | perl -ne "print \$1 . ' '  if /^Process '([\w-]+)'/")
             cmdOpt1="all $processes"
             ;;
           status|summary|reload|quit|validate)

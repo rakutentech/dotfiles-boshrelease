@@ -1,4 +1,8 @@
 <%=
 require 'yaml'
-YAML.dump(raw_properties)
+if p('shrc.enable_properties_dump')
+  YAML.dump(raw_properties)
+else
+  ""
+end
 %>

@@ -18,7 +18,8 @@ done
 unset pkg_bin
 
 # Set PS1
-PS1="\[${SHRC_PS1_COLOR}\](env=${SHRC_MY_DEPLOYMENT},role=${SHRC_MY_ROLE},ip=${SHRC_MY_IP})\u\[${SHRC_NO_COLOR}\]:\[${SHRC_CWD_COLOR}\]\w\[${SHRC_NO_COLOR}\]\n\\$ "
+source $SHRC_DIR/dotfiles/promptrc
+set-ps1
 
 # Symbol link safely
 slink () {
@@ -65,10 +66,6 @@ alias sms="monit summary"
 alias m="monit"
 alias link_apps="sudo link_apps"
 alias show-bosh-properties="sudo cat $SHRC_DIR/dotfiles/properties.yml"
-
-# RTB
-echo "cd $HOME"
-cd $HOME
 
 # Extra commands from manifest
 if [ -e $SHRC_DIR/dotfiles/extrarc ]; then

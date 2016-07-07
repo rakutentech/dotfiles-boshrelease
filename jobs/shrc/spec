@@ -6,6 +6,7 @@ templates:
   dotfiles/shrc: dotfiles/shrc
   dotfiles/envvars.erb: dotfiles/envvars
   dotfiles/inputrc: dotfiles/inputrc
+  dotfiles/promptrc: dotfiles/promptrc
   dotfiles/extrarc.erb: dotfiles/extrarc
   dotfiles/properties.yml.erb: dotfiles/properties.yml
   completes/wwsh.complete: completes/wwsh.complete
@@ -22,10 +23,20 @@ properties:
   shrc.prompt_color:
     description: color for PS1
     default: green
+  shrc.enable_properties_dump:
+    description: Dump raw properties in VMs
+    default: true
+
   shrc.extra_commands:
     description: Bash that will be run after shrc when login
     warning: THESE COMMANDS EXECUTED WITH ROOT PRIVILEGE, DO NOT CRASH YOUR MACHINE
     default: ""
+  shrc.extra_role_commands:
+    description: Dictionary that if VM name matches key, value will be inject to extrarc. Inject order are not promised
+    example:
+      cc: "echo You are on cc, loggregator_trafficcontroller, etc."
+      "router|dea": "echo You are on router or dea"
+    default: {}
 
   shrc.extra_users:
     description: A list of users you want to adduser to bosh vms and each entry defines "name" and "public_key".

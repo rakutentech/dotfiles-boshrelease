@@ -1,27 +1,31 @@
-
 # Dotfiles Boshrelease
 For higher productivity with `bosh ssh`.
 
-# What does this release do
-Inspired by `cloudfoundry-community/root-env-boshrelease`, `dotfiles-boshrelease` aims to make a better admin experience for `bosh ssh`, which is crucial for both dev & ops on BOSH based infrastructures.
+# What does Dotfiles-boshrelease Do
+The `dotfiles-boshrelease` lets you set up a cozy terminal environment within BOSH VMs. It sets up not only `root` user, but also `vcap` user, temporary `bosh_<random>` users, and you own users (`shrc.extra_users`).
 
-`Dotfiles-boshrelease` and `root-env-boshrelease` are similar in a sense that both enables the customization of `/root` directory. However they do it in different ways.
+With `dotfiles`, life is much easier when doing dev & ops on BOSH based infrastructures.
 
-`root-env-boshrelease` customizes /root by downloading a tarball from a url daily and then replace the /root. The good thing of such implementation is one can update `/root` without recreating release/re-deploying. However a concern would be downloading root-executing scripts to production servers might not be the best practice. Also, dotfiles usually should not be changing in a daily pace.
+This boshrelease is inspired by [`root-env`](https://github.com/cloudfoundry-community/root-env-boshrelease). However, unlike `root-env` which downloads a tarball daily to the `/root` dir, `dotfiles-boshrelease` uses only local files.
 
-In contrast, `dotfiles-boshrelease` only use local rc files from `/var/vcap/jobs/shrc`. They are deployed by bosh. If you remove `shrc` from manifest, your admin environment will be (almost) clean again.
+It's more secure (no root executable script from internet); All changes to VMs are visible in properties; Changes take place explicitly (only when you do the `bosh deploy`); And it's easy to uninstall - simply remove `shrc` job from manifest, and your admin environment is (almost) clean again.
 
 # How to use
 In manifest file, add `dotfiles` to releases. In template, add `shrc` job.
+
 Deploy the `shrc` job in a template, then find the amazing changes with `bosh ssh`.
 
+You can also check `jobs/shrc/spec` to tune properties as you like.
+
 # What if I want to add some more bash sugar?
-A property `shrc.extra_commands` are provided for you to inject your own commands easily. The value of `extra_commands` will be executed after `.shrc`.  
-On the other hand, you can also just fork and modify this project, then use bosh to create, upload and deploy your own release.
+You can inject your own startup commands using `shrc.extra_commands` (all VMs) and `shrc.extra_role_commands` (role based commands). The executing order is `dotfiles/shrc` -> `extra_commands` -> `extra_role_commands`.
+
+On the other hand, you can just fork and modify this project, then use bosh to create, upload and deploy your own release.
 
 # BIG NOTES
-1. It is known that if you modify `shrc.extra_commands` (although this should not happen frequently), all jobs those have `shrc` installed will be re-deployed since the templated files are changed. Considering that it is common to have `shrc` installed on ALL jobs, this will trigger re-deploy on ALL jobs, and sometimes it is known to be a pain in the ass.
-2. `shrc` is bound to `root`, `vcap` and `bosh_$TEMP` account. Means that when you su to `root`, `extra_commands` will be executed automatically with root priviledge. The extra commands are executed with `set -eu` for your flight safety. Don't shoot your feet.
+1. Bosh will re-dploy a VM if any of the templated files within it are changed. Since usually `dotfiles` are installed on every VMs, changing shrc properties (this should happen very rarely though) triggers not-desirable pain-in-the-ass *FULL re-deployment*. Be cautious to change shrc properties on production.
+2. Changing `shrc.extra_role_commands` also triggers *FULL re-deployment* of all `shrc` machines because `shrc` dumps properties (It's useful for inspecting what properties are passed to the VM). You can choose to disable `shrc.enable_properties_dump` to avoid full re-deployment but lose some convenience.
+3. `shrc` is bound to `root`, `vcap` and `bosh_$TEMP` account. Means that when you su to `root`, `extra_commands` will be executed automatically with root priviledge. The extra commands are executed with `set -eu` for your flight safety. Don't shoot your feet.
 
 # What is done by default
 1. inputrc:
@@ -32,12 +36,12 @@ On the other hand, you can also just fork and modify this project, then use bosh
   - Frequently used dirs: link to $HOME (vcap, packages, jobs, sys/log, etc..)
   - PS1: Meaningful and colorful PS1. You can set your favorite PS1 color in spec.
   - packages bins: add packages/*/bin to PATH.
-  - cd $HOME: Home sweet home.
 3. extra_users:
   - Set `shrc.extra_users` property to let dotfiles create admin account and inject public key for you. Note that there is a sanity check when creating account. If user's `name` and `public_key` failed to pass the check, they will be ignored. For more details, check `bin/add-users.erb`.
-  - Caveat: dotfiles will remove /home/*/.ssh/authorized_keys before it injects public keys, in order to keep system safe. If you unfortunately set /home/vcap/.ssh/authorized_keys, it will be removed.
+  - CAVEAT: dotfiles will remove /home/*/.ssh/authorized_keys before it injects public keys, in order to keep system safe. If you unfortunately set /home/vcap/.ssh/authorized_keys, it will be removed.
 4. extrarc:
-  - You can inject commands from manifest by overriding `shrc.extra_commands` property. However be careful not to crash your machine ^_^
+  - You can inject commands from manifest with `shrc.extra_commands` property. However be careful not to crash your machine ^_^
+  - You can inject commands based on VM role using `shrc.extra_role_commands`.
 5. shrc/userbin:
   - ack
   - (home made) link_apps: link warden container directories to $HOME/app.
@@ -48,6 +52,10 @@ On the other hand, you can also just fork and modify this project, then use bosh
   - wwsh completion
 7. properties dump:
   - Use `show-bosh-properties` command to see properties that's used by bosh-template. Useful for debugging.
+  - You can disable dumping by disabling `shrc.enable_properties_dump`
+8. set-ps1
+  - A small function `set-ps1` helps you to set informative prompt. By default it puts information such as `spec.deployment`, `job_name/index`, `ip` on PS1.
+  - You can also easily customize your prompt with `set-ps1`. Check `set-ps1 -h` for details.
 
 # Something else
 For some reason, by default the bash in stemcell doesnot recognize `.profile` or `.bash_profile`, and it will only read the already existed `.bashrc`. Therefore this release use `.bash_aliases` to trigger customized `shrc` script.
