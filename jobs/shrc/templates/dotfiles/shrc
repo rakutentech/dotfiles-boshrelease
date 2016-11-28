@@ -34,6 +34,7 @@ slink () {
 slink /var/vcap/                $HOME/vcap
 slink /var/vcap/packages/       $HOME/pkg
 slink /var/vcap/jobs/           $HOME/jobs
+slink /var/vcap/store/          $HOME/store
 slink /var/vcap/sys/log/        $HOME/log
 slink /var/vcap/monit/monit.log $HOME/monit.log
 
