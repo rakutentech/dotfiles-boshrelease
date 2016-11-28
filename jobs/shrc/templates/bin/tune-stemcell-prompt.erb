@@ -1,0 +1,18 @@
+#!/bin/bash
+# Disable or Enable 00-bosh-ps1
+set -eu
+
+STEMCELL_PS1_SCRIPT_PATH=/etc/profile.d/00-bosh-ps1
+if ! [[ -e $STEMCELL_PS1_SCRIPT_PATH ]]; then
+  exit 0
+fi
+
+SHRC_DISABLE_STEMCELL_PROMPT=<%= p('shrc.disable_stemcell_prompt') %>
+if [[ $SHRC_DISABLE_STEMCELL_PROMPT = true ]]; then
+  # Comment out bosh-ps1. `grep' is used to make action idempotent
+  grep -q COMMENTED_BY_SHRC $STEMCELL_PS1_SCRIPT_PATH || sed -i s:^:#COMMENTED_BY_SHRC: $STEMCELL_PS1_SCRIPT_PATH
+else
+  # Recover bosh-ps1
+  sed -i s:#COMMENTED_BY_SHRC:: $STEMCELL_PS1_SCRIPT_PATH
+fi
+

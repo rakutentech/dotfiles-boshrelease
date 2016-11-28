@@ -3,6 +3,7 @@ name: shrc
 templates:
   bin/install: bin/install
   bin/add-users.erb: bin/add-users
+  bin/tune-stemcell-prompt.erb: bin/tune-stemcell-prompt
   dotfiles/shrc: dotfiles/shrc
   dotfiles/envvars.erb: dotfiles/envvars
   dotfiles/inputrc: dotfiles/inputrc
@@ -25,6 +26,9 @@ properties:
     default: green
   shrc.enable_properties_dump:
     description: Dump raw properties in VMs
+    default: true
+  shrc.disable_stemcell_prompt:
+    description: Disable the PS1 setting from Stemcell (since 3306)
     default: true
 
   shrc.extra_commands:

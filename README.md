@@ -1,7 +1,7 @@
 # Dotfiles Boshrelease
 For higher productivity with `bosh ssh`.
 
-# What does Dotfiles-boshrelease Do
+# What is Dotfiles-boshrelease
 The `dotfiles-boshrelease` lets you set up a cozy terminal environment within BOSH VMs. It sets up not only `root` user, but also `vcap` user, temporary `bosh_<random>` users, and you own users (`shrc.extra_users`).
 
 With `dotfiles`, life is much easier when doing dev & ops on BOSH based infrastructures.
@@ -34,7 +34,7 @@ On the other hand, you can just fork and modify this project, then use bosh to c
   - Completion-ignore-case on
 2. shrc:
   - Frequently used dirs: link to $HOME (vcap, packages, jobs, sys/log, etc..)
-  - PS1: Meaningful and colorful PS1. You can set your favorite PS1 color in spec.
+  - PS1: Meaningful and colorful PS1. You can set your favorite PS1 color in spec. `Dotfiles` disables the Stemcell(3306+) built-in PS1 by default. You can re-enable it by setting `shrc.disable_stemcell_prompt` to `false` in the manifest.
   - packages bins: add packages/*/bin to PATH.
 3. extra_users:
   - Set `shrc.extra_users` property to let dotfiles create admin account and inject public key for you. Note that there is a sanity check when creating account. If user's `name` and `public_key` failed to pass the check, they will be ignored. For more details, check `bin/add-users.erb`.
