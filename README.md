@@ -23,8 +23,8 @@ You can inject your own startup commands using `shrc.extra_commands` (all VMs) a
 On the other hand, you can just fork and modify this project, then use bosh to create, upload and deploy your own release.
 
 # BIG NOTES
-1. Bosh will re-dploy a VM if any of the templated files within it are changed. Since usually `dotfiles` are installed on every VMs, changing shrc properties (this should happen very rarely though) triggers not-desirable pain-in-the-ass *FULL re-deployment*. Be cautious to change shrc properties on production.
-2. Changing `shrc.extra_role_commands` also triggers *FULL re-deployment* of all `shrc` machines because `shrc` dumps properties (It's useful for inspecting what properties are passed to the VM). You can choose to disable `shrc.enable_properties_dump` to avoid full re-deployment but lose some convenience.
+1. Bosh will re-dploy a VM if any of the templated files is changed. Since `dotfiles` are installed on every VMs usually, changing shrc properties (should happen very rarely though) or updating release version triggers *FULL re-deployment*.
+2. `shrc.extra_role_commands` should be set as job properties, rather than globally, to avoid *FULL re-deployment* on changing.
 3. `shrc` is bound to `root`, `vcap` and `bosh_$TEMP` account. Means that when you su to `root`, `extra_commands` will be executed automatically with root priviledge. The extra commands are executed with `set -eu` for your flight safety. Don't shoot your feet.
 
 # What is done by default
@@ -50,9 +50,9 @@ On the other hand, you can just fork and modify this project, then use bosh to c
 6. completion:
   - monit completion
   - wwsh completion
-7. properties dump:
+7. properties dump(Deprecated):
+  - In recent version of BOSH, `shrc` can no longer read properties of other jobs. So this feature is disabled by default.
   - Use `show-bosh-properties` command to see properties that's used by bosh-template. Useful for debugging.
-  - You can disable dumping by disabling `shrc.enable_properties_dump`
 8. set-ps1
   - A small function `set-ps1` helps you to set informative prompt. By default it puts information such as `spec.deployment`, `job_name/index`, `ip` on PS1.
   - You can also easily customize your prompt with `set-ps1`. Check `set-ps1 -h` for details.

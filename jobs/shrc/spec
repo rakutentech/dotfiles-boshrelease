@@ -26,7 +26,7 @@ properties:
     default: green
   shrc.enable_properties_dump:
     description: Dump raw properties in VMs
-    default: true
+    default: false
   shrc.disable_stemcell_prompt:
     description: Disable the PS1 setting from Stemcell (since 3306)
     default: true
