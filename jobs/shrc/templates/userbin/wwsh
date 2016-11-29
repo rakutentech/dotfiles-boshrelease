@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # wwsh: a shortcut to wsh into DEA apps.
-# This command depends on link_apps generated $HOME/apps/<appname>.
+# This command depends on link-apps generated $HOME/apps/<appname>.
 # Usage: wwsh <appname>
 # ENV: WSH_USER, by default vcap
 

@@ -11,7 +11,7 @@ templates:
   dotfiles/extrarc.erb: dotfiles/extrarc
   completes/wwsh.complete: completes/wwsh.complete
   completes/monit.complete: completes/monit.complete
-  userbin/link_apps: userbin/link_apps
+  userbin/link-apps: userbin/link-apps
   userbin/wwsh: userbin/wwsh
   userbin/ack: userbin/ack
   userbin/haste: userbin/haste

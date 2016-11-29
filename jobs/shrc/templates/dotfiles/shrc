@@ -51,13 +51,13 @@ compl $SHRC_DIR/completes/monit.complete
 # Warden containers
 slink /var/vcap/data/warden/depot/ $HOME/depot
 # Link warden containers to $HOME/apps
-if [[ -e /var/vcap/data/warden/depot/ ]] && which link_apps >/dev/null 2>&1; then
+if [[ -e /var/vcap/data/warden/depot/ ]] && which link-apps >/dev/null 2>&1; then
   # Since root privilege is needed for reading "instances.json",
-  # If user is NOPASSWD sudoer, run link_apps, else throw a notice if failed.
+  # If user is NOPASSWD sudoer, run link-apps, else throw a notice if failed.
   if sudo -n true; then
-    sudo -n link_apps
+    sudo -n link-apps
   else
-    echo "(っ˘ω˘ς ) Cannot auto link_apps, try sudo link_apps with your pw."
+    echo "(っ˘ω˘ς ) Cannot auto link-apps, try sudo link-apps with your pw."
   fi
 fi
 
@@ -65,7 +65,7 @@ fi
 alias monit="sudo monit"
 alias sms="monit summary"
 alias m="monit"
-alias link_apps="sudo link_apps"
+alias link-apps="sudo link-apps"
 
 # Extra commands from manifest
 if [ -e $SHRC_DIR/dotfiles/extrarc ]; then

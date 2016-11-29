@@ -44,7 +44,7 @@ On the other hand, you can just fork and modify this project, then use bosh to c
   - You can inject commands based on VM role using `shrc.extra_role_commands`.
 5. shrc/userbin:
   - ack
-  - (home made) link_apps: link warden container directories to $HOME/app.
+  - (home made) link-apps: link warden container directories to $HOME/app.
   - (home made) wwsh: a shortcut to wsh into warden containers.
   - (home made) haste: a hastebin client, is convenient when you have a internal hastebin server.
 6. completion:
