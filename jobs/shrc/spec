@@ -9,7 +9,6 @@ templates:
   dotfiles/inputrc: dotfiles/inputrc
   dotfiles/promptrc: dotfiles/promptrc
   dotfiles/extrarc.erb: dotfiles/extrarc
-  dotfiles/properties.yml.erb: dotfiles/properties.yml
   completes/wwsh.complete: completes/wwsh.complete
   completes/monit.complete: completes/monit.complete
   userbin/link_apps: userbin/link_apps
@@ -24,9 +23,6 @@ properties:
   shrc.prompt_color:
     description: color for PS1
     default: green
-  shrc.enable_properties_dump:
-    description: Dump raw properties in VMs
-    default: false
   shrc.disable_stemcell_prompt:
     description: Disable the PS1 setting from Stemcell (since 3306)
     default: true

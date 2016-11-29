@@ -50,10 +50,7 @@ On the other hand, you can just fork and modify this project, then use bosh to c
 6. completion:
   - monit completion
   - wwsh completion
-7. properties dump(Deprecated):
-  - In recent version of BOSH, `shrc` can no longer read properties of other jobs. So this feature is disabled by default.
-  - Use `show-bosh-properties` command to see properties that's used by bosh-template. Useful for debugging.
-8. set-ps1
+7. set-ps1
   - A small function `set-ps1` helps you to set informative prompt. By default it puts information such as `spec.deployment`, `job_name/index`, `ip` on PS1.
   - You can also easily customize your prompt with `set-ps1`. Check `set-ps1 -h` for details.
 
