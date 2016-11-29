@@ -3,15 +3,15 @@ name: shrc
 templates:
   bin/install: bin/install
   bin/add-users.erb: bin/add-users
+  bin/tune-stemcell-prompt.erb: bin/tune-stemcell-prompt
   dotfiles/shrc: dotfiles/shrc
   dotfiles/envvars.erb: dotfiles/envvars
   dotfiles/inputrc: dotfiles/inputrc
   dotfiles/promptrc: dotfiles/promptrc
   dotfiles/extrarc.erb: dotfiles/extrarc
-  dotfiles/properties.yml.erb: dotfiles/properties.yml
   completes/wwsh.complete: completes/wwsh.complete
   completes/monit.complete: completes/monit.complete
-  userbin/link_apps: userbin/link_apps
+  userbin/link-apps: userbin/link-apps
   userbin/wwsh: userbin/wwsh
   userbin/ack: userbin/ack
   userbin/haste: userbin/haste
@@ -23,8 +23,8 @@ properties:
   shrc.prompt_color:
     description: color for PS1
     default: green
-  shrc.enable_properties_dump:
-    description: Dump raw properties in VMs
+  shrc.disable_stemcell_prompt:
+    description: Disable the PS1 setting from Stemcell (since 3306)
     default: true
 
   shrc.extra_commands:

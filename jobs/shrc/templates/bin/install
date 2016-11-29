@@ -11,7 +11,7 @@ echo "if [ -f $SHRC_DIR/dotfiles/shrc ]; then source $SHRC_DIR/dotfiles/shrc; fi
 echo "if [ -f $SHRC_DIR/dotfiles/shrc ]; then source $SHRC_DIR/dotfiles/shrc; fi" > /etc/skel/.bash_aliases
 
 chmod +x $SHRC_DIR/userbin/*
-chmod 400 $SHRC_DIR/dotfiles/properties.yml
 $SHRC_DIR/bin/add-users
+$SHRC_DIR/bin/tune-stemcell-prompt
 ln -sf /var/vcap/bosh/bin/monit /usr/local/bin/monit # Call 'sudo monit' from outside
 date > $SHRC_DIR/done
