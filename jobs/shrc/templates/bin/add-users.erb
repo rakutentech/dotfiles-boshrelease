@@ -3,20 +3,22 @@ set -eu
 
 function create_user {
   local USER_NAME="$1"
-  local USER_GROUPS
-
-  # Add new user to bosh_sudoers group (NOPASSWD)
-  # But bypass it on old stemcells to avoid install failure
-  if getent group bosh_sudoers >/dev/null 2>&1; then
-    USER_GROUPS=vcap,bosh_sudoers
-  else
-    USER_GROUPS=vcap
-  fi
 
   # If user doesnot exist, try to create it.
   if ! id -u "$USER_NAME" >/dev/null 2>&1; then
-    useradd -m -G $USER_GROUPS -s /bin/bash "$USER_NAME"
+    useradd -m -s /bin/bash "$USER_NAME"
   fi
+
+  # Add user to the following groups if exist:
+  #   vcap: get permission as vcap group
+  #   bosh_sudoers: Allow sudo without password
+  #   bosh_sshers: Allow ssh on stemcells v3363+
+  local BOSH_SPECIAL_GROUP
+  for BOSH_SPECIAL_GROUP in vcap bosh_sudoers bosh_sshers; do
+    if getent group "$BOSH_SPECIAL_GROUP" >/dev/null 2>&1; then
+      usermod -a -G "$BOSH_SPECIAL_GROUP" "$USER_NAME"
+    fi
+  done
 }
 
 function inject_key {
