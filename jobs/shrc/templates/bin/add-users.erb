@@ -2,33 +2,35 @@
 set -eu
 
 function create_user {
-  local USER_NAME="$1"
-  local USER_GROUPS
-
-  # Add new user to bosh_sudoers group (NOPASSWD)
-  # But bypass it on old stemcells to avoid install failure
-  if getent group bosh_sudoers >/dev/null 2>&1; then
-    USER_GROUPS=vcap,bosh_sudoers
-  else
-    USER_GROUPS=vcap
-  fi
+  local user_name="$1"
 
   # If user doesnot exist, try to create it.
-  if ! id -u "$USER_NAME" >/dev/null 2>&1; then
-    useradd -m -G $USER_GROUPS -s /bin/bash "$USER_NAME"
+  if ! id -u "$user_name" >/dev/null 2>&1; then
+    useradd -m -s /bin/bash "$user_name"
   fi
+
+  # Add user to the following groups if exist:
+  #   vcap: get permission as vcap group
+  #   bosh_sudoers: Allow sudo without password
+  #   bosh_sshers: Allow ssh on stemcells v3363+
+  local bosh_special_group
+  for bosh_special_group in vcap bosh_sudoers bosh_sshers; do
+    if getent group "$bosh_special_group" >/dev/null 2>&1; then
+      usermod -a -G "$bosh_special_group" "$user_name"
+    fi
+  done
 }
 
 function inject_key {
-  local USER_NAME="$1"
-  local USER_KEY="$2"
+  local user_name="$1"
+  local user_key="$2"
 
-  local USER_HOME=/home/"$USER_NAME"
-  mkdir -p "$USER_HOME"/.ssh
-  echo "$USER_KEY" > "$USER_HOME"/.ssh/authorized_keys
-  chown -R "$USER_NAME:$USER_NAME" "$USER_HOME"/.ssh
-  chmod 700 "$USER_HOME"/.ssh
-  chmod 600 "$USER_HOME"/.ssh/authorized_keys
+  local user_home=/home/"$user_name"
+  mkdir -p "$user_home"/.ssh
+  echo "$user_key" > "$user_home"/.ssh/authorized_keys
+  chown -R "$user_name:$user_name" "$user_home"/.ssh
+  chmod 700 "$user_home"/.ssh
+  chmod 600 "$user_home"/.ssh/authorized_keys
 }
 
 function remove_keys {
