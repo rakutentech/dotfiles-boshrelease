@@ -8,6 +8,15 @@ if [ -z "$HASTE_SERVER" ] ; then
   exit 1
 fi
 
+# Input is $1, fallback to stdin
+# If HASTE_BASE64_ENC is set,
 input="${1:-/dev/stdin}"
-curl -X POST -s --data-binary @"${input}" "$HASTE_SERVER/documents" | \
+
+if [ -n "$HASTE_BASE64_ENC" ] ; then
+    cmd=base64
+else
+    cmd=cat
+fi
+
+curl -X POST -s --data-binary @<($cmd "${input}") "$HASTE_SERVER/documents" | \
   awk -F '"' '{print ENVIRON["HASTE_SERVER"] "/raw/" $4}'
