@@ -1,3 +1,5 @@
-check file shrc
-  with path /var/vcap/jobs/shrc/done
-  if does not exist then exec /var/vcap/jobs/shrc/bin/install
+check process shrc
+  with pidfile /var/vcap/sys/run/shrc/pid
+  start program "/var/vcap/jobs/shrc/bin/ctl start"
+  stop program "/var/vcap/jobs/shrc/bin/ctl stop"
+  group vcap

@@ -1,8 +1,9 @@
 ---
 name: shrc
 templates:
-  bin/install: bin/install
+  bin/ctl: bin/ctl
   bin/add-users.erb: bin/add-users
+  bin/remove-sshkeys.erb: bin/remove-sshkeys
   bin/tune-stemcell-prompt.erb: bin/tune-stemcell-prompt
   dotfiles/shrc: dotfiles/shrc
   dotfiles/envvars.erb: dotfiles/envvars
