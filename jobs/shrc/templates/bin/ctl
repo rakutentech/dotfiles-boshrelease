@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -euo pipefail
+
+JOB_NAME=shrc
+
+JOB_DIR=/var/vcap/jobs/$JOB_NAME
+RUN_DIR=/var/vcap/sys/run/$JOB_NAME
+LOG_DIR=/var/vcap/sys/log/$JOB_NAME
+LOG_TAG=$JOB_NAME.ctl
+PIDFILE=$RUN_DIR/pid
+
+mkdir -p $RUN_DIR $LOG_DIR
+
+exec 1> >(tee -a ${LOG_DIR}/ctl.stdout.log | logger -p user.info  -t vcap.${LOG_TAG})
+exec 2> >(tee -a ${LOG_DIR}/ctl.stderr.log | logger -p user.error -t vcap.${LOG_TAG})
+
+case $1 in
+
+  start)
+    chown -R vcap:vcap $RUN_DIR $LOG_DIR
+
+    # The root, the vcap and the temp
+    echo "if [ -f $JOB_DIR/dotfiles/shrc ]; then source $JOB_DIR/dotfiles/shrc; fi" > /root/.bash_aliases
+    echo "if [ -f $JOB_DIR/dotfiles/shrc ]; then source $JOB_DIR/dotfiles/shrc; fi" > /home/vcap/.bash_aliases
+    echo "if [ -f $JOB_DIR/dotfiles/shrc ]; then source $JOB_DIR/dotfiles/shrc; fi" > /etc/skel/.bash_aliases
+
+    chmod +x $JOB_DIR/userbin/*
+    $JOB_DIR/bin/remove-sshkeys
+    $JOB_DIR/bin/add-users
+    $JOB_DIR/bin/tune-stemcell-prompt
+    ln -sf /var/vcap/bosh/bin/monit /usr/local/bin/monit # Call 'sudo monit' from outside
+
+    echo 1 > $PIDFILE
+    ;;
+
+  stop)
+    rm -f $PIDFILE
+    ;;
+
+  *)
+    echo "Usage: ctl {start|stop}" ;;
+
+esac
