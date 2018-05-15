@@ -38,7 +38,7 @@ On the other hand, you can just fork and modify this project, then use bosh to c
   - packages bins: add packages/*/bin to PATH.
 3. extra_users:
   - Set `shrc.extra_users` property to let dotfiles create admin account and inject public key for you. Note that there is a sanity check when creating account. If user's `name` and `public_key` failed to pass the check, they will be ignored. For more details, check `bin/add-users.erb`.
-  - CAVEAT: dotfiles will remove /home/*/.ssh/authorized_keys before it injects public keys, in order to keep system safe. If you unfortunately set /home/vcap/.ssh/authorized_keys, it will be removed.
+  - CAVEAT: $HOME/.ssh/authorized_keys are removed on start before injecting the new keys for all users created by dotfiles.
 4. extrarc:
   - You can inject commands from manifest with `shrc.extra_commands` property. However be careful not to crash your machine ^_^
   - You can inject commands based on VM role using `shrc.extra_role_commands`.
