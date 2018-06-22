@@ -19,6 +19,8 @@ builds:
     version: "9"
   ba8bc982-eeae-4837-6ea6-587597fc524a:
     version: "12"
+  bbb24287-4078-4b26-5bf0-75ba6a3316d8:
+    version: 12.0.0
   cb0cec7c-bc1c-414e-9e35-3e150e24035e:
     version: "2"
   cba8f3ce-5211-4f0a-89a3-a45825bebd04:

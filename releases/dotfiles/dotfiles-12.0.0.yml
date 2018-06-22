@@ -1,0 +1,13 @@
+name: dotfiles
+version: 12.0.0
+commit_hash: 85f4e46
+uncommitted_changes: false
+jobs:
+- name: shrc
+  version: 37204729e2e8518b3ce9fe33c93729a4e161984e
+  fingerprint: 37204729e2e8518b3ce9fe33c93729a4e161984e
+  sha1: 66ea1de5c2f1e1d65b746409702df195336b7eec
+license:
+  version: 0cbe6afbdfbb809cac72b532e457eec3763e66d5
+  fingerprint: 0cbe6afbdfbb809cac72b532e457eec3763e66d5
+  sha1: 41b42da77aca641bf9e33087e99068a67317e2fb
